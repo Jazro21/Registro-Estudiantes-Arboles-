@@ -26,34 +26,80 @@
 // Es funcional, pero no se añadió el mensaje (estudiante no encontrado) si el codigo gresado no este registrado en el arbol
 // Solucionar lo antes posible
 
+// Notas adicionales del Ing. Ampudia para el Lic. Perez
+
+// Ocurrio un problema. se modifico el codigo para ordenar los estudiantes de acuerdo a su codigo, por lo que tuve que hacer varias modificaciones
+// Al final, no pude añadir dicha opcion. ademas, cada ves que se recorre el arreglo, aparece un bucle
+// Este codigo es nuevo. quise empezar desde cero por que se me hacia más facil
+// aun falta el metodo eliminar
+
 #include <iostream>
 #include <malloc.h>
 
 using namespace std;
 
-struct Registro
+struct Registro4
 {
     char Nombre[20];
     char Apellido[20];
-    int Codigo = 0;
 
+    int Codigo = 0;
     int Dia = 0;
     int Mes = 0;
     int Año = 0;
 
-    Registro *izq;
-    Registro *der;
+    Registro4 *izq;
+    Registro4 *der;
 };
 
-Registro *aux = NULL;
-Registro *aux2 = NULL;
-Registro *aux3 = NULL;
-Registro *raiz = NULL;
-Registro *raiz2 = NULL;
+Registro4 *aux1 = NULL;
+Registro4 *aux2 = NULL;
+Registro4 *aux3 = NULL;
+Registro4 *aux4 = NULL;
+
+Registro4 *raiz = NULL;
+Registro4 *raiz2 = NULL;
+
+// metodo para pedir los datos
+
+int Datos()
+{
+    aux1 = (struct Registro4 *)malloc(sizeof(struct Registro4));
+    aux3 = (struct Registro4 *)malloc(sizeof(struct Registro4));
+
+    cout << "Ingrese el nombre: ";
+    cin >> aux1->Nombre;
+
+    cout << "Ingrese el apellido: ";
+    cin >> aux1->Apellido;
+
+    cout << "Ingrese el codigo: ";
+    cin >> aux1->Codigo;
+
+    cout << "Ingrese su dia de nacimiento: ";
+    cin >> aux1->Dia;
+
+    cout << "Ingrese su mes de nacimiento: ";
+    cin >> aux1->Mes;
+
+    cout << "Ingrese su año de nacimiento: ";
+    cin >> aux1->Año;
+
+    aux1->izq = NULL;
+    aux1->der = NULL;
+
+    aux3->izq = NULL;
+    aux3->der = NULL;
+
+    aux3 = aux1;
+    return 0;
+}
+
+// metodos de posicionar los datos
 
 int posicionarFecha()
 {
-    if (aux->Dia == aux2->Dia && aux->Mes == aux2->Mes && aux->Año == aux2->Año) // para la derecha
+    if (aux1->Dia == aux2->Dia && aux1->Mes == aux2->Mes && aux1->Año == aux2->Año) // para la derecha
     {
         if (aux2->der != NULL)
         {
@@ -62,11 +108,11 @@ int posicionarFecha()
         }
         else
         {
-            aux2->der = aux; // ¿Por qué?
+            aux2->der = aux1; // ¿Por qué?
         }
     }
 
-    if (aux->Dia != aux2->Dia && aux->Mes != aux2->Mes && aux->Año != aux2->Año) // para la izquierda
+    if (aux1->Dia != aux2->Dia && aux1->Mes != aux2->Mes && aux1->Año != aux2->Año) // para la izquierda
     {
         if (aux2->izq != NULL)
         {
@@ -75,7 +121,7 @@ int posicionarFecha()
         }
         else
         {
-            aux2->izq = aux; // ¿Por qué?
+            aux2->izq = aux1; // ¿Por qué?
         }
     }
     return 0;
@@ -111,43 +157,16 @@ int posicionarCodigo()
     return 0;
 }
 
-int datos()
-{
-    aux = (struct Registro *)malloc(sizeof(struct Registro));
-
-    cout << "Ingrese el nombre: ";
-    cin >> aux->Nombre;
-
-    cout << "Ingrese el apellido: ";
-    cin >> aux->Apellido;
-
-    cout << "Ingrese el codigo: ";
-    cin >> aux->Codigo;
-
-    cout << "Ingrese su dia de nacimiento: ";
-    cin >> aux->Dia;
-
-    cout << "Ingrese su mes de nacimiento: ";
-    cin >> aux->Mes;
-
-    cout << "Ingrese su año de nacimiento: ";
-    cin >> aux->Año;
-
-    aux->izq = NULL;
-    aux->der = NULL;
-
-    aux3 = aux;
-    return 0;
-}
+// metodos de registrar los estudiantes
 
 int registrarFecha()
 {
-    if (raiz == NULL) // si no hay raiz, se libera memoria (se utiliza aux)
+    if (raiz == NULL) // si no hay raiz, se libera memoria (se utiliza aux1)
     {
-        raiz = aux;
-        raiz2 = aux;
-        aux = NULL;
-        free(aux);
+        raiz = aux1;
+        raiz2 = aux1;
+        aux1 = NULL;
+        free(aux1);
     }
     else // si ya hay una raiz, llama a el metodo posicionarFecha (se utiliza aux2)
     {
@@ -161,22 +180,24 @@ int registrarFecha()
 int registrarCodigo()
 {
 
-    if (raiz == NULL) // si no hay raiz, se libera memoria (se utiliza aux)
+    if (raiz2 == NULL) // si no hay raiz, se libera memoria (se utiliza aux3)
     {
-        raiz = aux;
-        raiz2 = aux;
-        aux = NULL;
-        free(aux);
+        raiz2 = aux3;
+        raiz2 = aux3;
+        aux3 = NULL;
+        free(aux3);
     }
     else // si ya hay una raiz, llama a el metodo posicionarFecha (se utiliza aux2)
     {
-        aux2 = raiz;
+        aux2 = raiz2;
         posicionarCodigo();
     }
     return 0;
 }
 
-int ordenarPre(Registro *retroceso)
+// Metodos de ordenamiento
+
+int ordenarPre(Registro4 *retroceso)
 {
     cout << "Nombre: " << retroceso->Nombre << " " << retroceso->Apellido << endl;
     cout << "Codigo: " << retroceso->Codigo << endl;
@@ -192,37 +213,16 @@ int ordenarPre(Registro *retroceso)
     }
     return 0;
 }
-int recorrerPreC()
-{
-    aux = raiz;
 
-    if (aux != NULL)
-    {
-        ordenarPre(aux);
-    }
-    return 0;
-}
-
-int recorrerPreF()
-{
-    aux = raiz2;
-
-    if (aux != NULL)
-    {
-        ordenarPre(aux);
-    }
-    return 0;
-}
-
-int ordenarIn(Registro *retroceso)
+int ordenarIn(Registro4 *retroceso)
 {
     if (retroceso->izq != NULL)
     {
-        ordenarPre(retroceso->izq);
+        ordenarIn(retroceso->izq);
     }
     if (retroceso->der != NULL)
     {
-        ordenarPre(retroceso->der);
+        ordenarIn(retroceso->der);
     }
     cout << "Nombre: " << retroceso->Nombre << " " << retroceso->Apellido << endl;
     cout << "Codigo: " << retroceso->Codigo << endl;
@@ -231,33 +231,12 @@ int ordenarIn(Registro *retroceso)
 
     return 0;
 }
-int recorrerInF()
-{
-    aux = raiz;
 
-    if (aux != NULL)
-    {
-        ordenarIn(aux);
-    }
-    return 0;
-}
-
-int recorrerInC()
-{
-    aux = raiz2;
-
-    if (aux != NULL)
-    {
-        ordenarIn(aux);
-    }
-    return 0;
-}
-
-int ordenarPost(Registro *retroceso)
+int ordenarPost(Registro4 *retroceso)
 {
     if (retroceso->izq != NULL)
     {
-        ordenarPre(retroceso->izq);
+        ordenarPost(retroceso->izq);
     }
     cout << "Nombre: " << retroceso->Nombre << " " << retroceso->Apellido << endl;
     cout << "codigo: " << retroceso->Codigo << endl;
@@ -266,29 +245,75 @@ int ordenarPost(Registro *retroceso)
 
     if (retroceso->der != NULL)
     {
-        ordenarPre(retroceso->der);
+        ordenarPost(retroceso->der);
     }
     return 0;
 }
 
-int recorrerPostF() // para fecha
-{
-    aux = raiz;
+// Metodos para recorrer el arbol
 
-    if (aux != NULL)
+// Pre orden
+int recorrerPreFecha()
+{
+    aux1 = raiz;
+
+    if (aux1 != NULL)
     {
-        ordenarPost(aux);
+        ordenarPre(aux1);
+    }
+    return 0;
+}
+int recorrerPreCodigo()
+{
+    aux3 = raiz2;
+
+    if (aux3 != NULL)
+    {
+        ordenarPre(aux3);
     }
     return 0;
 }
 
-int recorrerPostC() // para codigo
+// In orden
+int recorrerInFecha()
 {
-    aux = raiz2;
+    aux1 = raiz;
 
-    if (aux != NULL)
+    if (aux1 != NULL)
     {
-        ordenarPost(aux);
+        ordenarIn(aux1);
+    }
+    return 0;
+}
+int recorrerInCodigo()
+{
+    aux3 = raiz2;
+
+    if (aux3 != NULL)
+    {
+        ordenarIn(aux3);
+    }
+    return 0;
+}
+
+// Post orden
+int recorrerPostFecha()
+{
+    aux1 = raiz;
+
+    if (aux1 != NULL)
+    {
+        ordenarPost(aux1);
+    }
+    return 0;
+}
+int recorrerPostCodigo()
+{
+    aux3 = raiz2;
+
+    if (aux3 != NULL)
+    {
+        ordenarPost(aux3);
     }
     return 0;
 }
@@ -303,33 +328,33 @@ int buscar()
         return 0;
     }
 
-    aux = raiz;
+    aux1 = raiz;
 
     cout << "Ingrese el codigo del estudiante que desea buscar: ";
     cin >> buscador;
 
-    if (buscador != aux->Codigo)
+    if (buscador != aux1->Codigo)
     {
         cout << "Estudiante no registrado" << endl;
     }
 
-    if (aux != NULL)
+    if (aux1 != NULL)
     {
-        if (buscador != aux->Codigo)
+        if (buscador != aux1->Codigo)
         {
-            if (aux->der != NULL && aux->izq != NULL)
+            if (aux1->der != NULL && aux1->izq != NULL)
             {
-                aux = aux->der;
-                aux = aux->izq;
+                aux1 = aux1->der;
+                aux1 = aux1->izq;
                 buscar();
             }
         }
-        else if (buscador == aux->Codigo)
+        else if (buscador == aux1->Codigo)
         {
             cout << "Estudiante encontrado" << endl;
-            cout << "Nombre: " << aux->Nombre << " " << aux->Apellido << endl;
-            cout << "Codigo: " << aux->Codigo << endl;
-            cout << "Fecha de nacimiento: " << aux->Dia << "/" << aux->Mes << "/" << aux->Año << endl;
+            cout << "Nombre: " << aux1->Nombre << " " << aux1->Apellido << endl;
+            cout << "Codigo: " << aux1->Codigo << endl;
+            cout << "Fecha de nacimiento: " << aux1->Dia << "/" << aux1->Mes << "/" << aux1->Año << endl;
             cout << " " << endl;
         }
     }
@@ -338,110 +363,104 @@ int buscar()
 
 int opcion = 0;
 int opcion2 = 0;
-int opcion3 = 0;
-int opcion4 = 0;
 
-int main()
+int menu()
 {
-    do
+    cout << "menu de registro de estudiantes" << endl;
+    cout << "1. Agregar estudiante" << endl;
+    cout << "2. Buscar estudiante" << endl;
+    cout << "3. Recorrer el listado de estudiantes (Pre_Orden)" << endl;
+    cout << "4. Recorrer el listado de estudiantes (In_Orden)" << endl;
+    cout << "5. Recorrer el listado de estudiantes (Post_Orden)" << endl;
+    cout << "6. Eliminar estudiante (no disponible)" << endl;
+    cout << "7. salir" << endl;
+    cout << " " << endl;
+
+    cin >> opcion;
+
+    switch (opcion)
     {
+    case 1:
+        Datos();
+        registrarFecha();
+        registrarCodigo();
+        break;
+    case 2:
+        buscar();
+        break;
+    case 3:
+        cout << "que desea prevalecer:" << endl;
+        cout << "1. fecha" << endl;
+        cout << "2. codigo" << endl;
 
-        cout << "menu de registro de estudiantes" << endl;
-        cout << "1. Agregar estudiante" << endl;
-        cout << "2. Buscar estudiante" << endl;
-        cout << "3. Recorrer el listado de estudiantes (Pre_Orden)" << endl;
-        cout << "4. Recorrer el listado de estudiantes (In_Orden)" << endl;
-        cout << "5. Recorrer el listado de estudiantes (Post_Orden)" << endl;
-        cout << "6. Eliminar estudiante (no disponible)" << endl;
-        cout << "7. salir" << endl;
-        cout << " " << endl;
-
-        cin >> opcion;
-
-        switch (opcion)
+        switch (opcion2)
         {
         case 1:
-            datos();
-            registrarFecha();
-            registrarCodigo();
+            cout << "Recorrido en Pre_orden:" << endl;
+            recorrerPreFecha();
             break;
+
         case 2:
-            buscar();
-            break;
-        case 3: // Pre
-            cout << "que desea prevalecer:" << endl;
-            cout << "1. fecha" << endl;
-            cout << "2. codigo" << endl;
-            cin >> opcion2;
-
-            switch (opcion2)
-            {
-            case 1:
-                cout << "Recorrido en Pre_orden:" << endl;
-                recorrerPreF();
-                break;
-            case 2:
-                cout << "Recorrido en Pre_orden:" << endl;
-                recorrerPreC();
-                break;
-            default:
-                cout << "opcion invalida" << endl;
-                break;
-            }
-            break;
-        case 4: // IN
-            cout << "que desea prevalecer:" << endl;
-            cout << "1. fecha" << endl;
-            cout << "2. codigo" << endl;
-            cin >> opcion3;
-
-            switch (opcion3)
-            {
-            case 1:
-                cout << "Recorrido en In_orden:" << endl;
-                recorrerInF();
-                break;
-            case 2:
-                cout << "Recorrido en In_orden:" << endl;
-                recorrerInC();
-                break;
-            default:
-                cout << "opcion invalida" << endl;
-                break;
-            }
-            break;
-        case 5: // Post
-            cout << "que desea prevalecer:" << endl;
-            cout << "1. fecha" << endl;
-            cout << "2. codigo" << endl;
-            cin >> opcion4;
-
-            switch (opcion4)
-            {
-            case 1:
-                cout << "Recorrido en Post_orden:" << endl;
-                recorrerPostF();
-                break;
-            case 2:
-                cout << "Recorrido en Post_orden:" << endl;
-                recorrerPostC();
-                break;
-            default:
-                cout << "opcion invalida" << endl;
-                break;
-            }
-            break;
-        case 6:
-            break;
-        case 7:
-            cout << "Finalizando programa" << endl;
+            cout << "Recorrido en Pre_orden:" << endl;
+            recorrerPreCodigo();
             break;
         default:
             cout << "Opcion no valida" << endl;
             break;
         }
+        break;
 
-    } while (opcion != 7);
+    case 4:
+        cout << "que desea prevalecer:" << endl;
+        cout << "1. fecha" << endl;
+        cout << "2. codigo" << endl;
+
+        switch (opcion2)
+        {
+        case 1:
+            cout << "Recorrido en In_orden:" << endl;
+            recorrerInFecha();
+            break;
+
+        case 2:
+            cout << "Recorrido en In_orden:" << endl;
+            recorrerInCodigo();
+            break;
+        default:
+            cout << "Opcion no valida" << endl;
+            break;
+        }
+        break;
+
+    case 5:
+        cout << "que desea prevalecer:" << endl;
+        cout << "1. fecha" << endl;
+        cout << "2. codigo" << endl;
+
+        switch (opcion2)
+        {
+        case 1:
+            cout << "Recorrido en Post_orden:" << endl;
+            recorrerPostFecha();
+            break;
+
+        case 2:
+            cout << "Recorrido en Post_orden:" << endl;
+            recorrerPostCodigo();
+            break;
+        default:
+            cout << "Opcion no valida" << endl;
+            break;
+        }
+        break;
+
+    case 7:
+        cout << "Finalizando programa" << endl;
+        break;
+    default:
+        cout << "Opcion no valida" << endl;
+        break;
+    }
 
     return 0;
 }
