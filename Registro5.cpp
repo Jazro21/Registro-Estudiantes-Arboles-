@@ -27,8 +27,8 @@ Registro5 *auxC2 = NULL;
 
 int Datos()
 {
-    auxF1 = (Registro5 *)malloc(sizeof(Registro5));
-    auxC1 = (Registro5 *)malloc(sizeof(Registro5));
+    auxF1 = (struct Registro5 *)malloc(sizeof(struct Registro5));
+    auxC1 = (struct Registro5 *)malloc(sizeof(struct Registro5));
 
     cout << "Ingrese el nombre: ";
     cin >> auxF1->Nombre;
@@ -47,6 +47,12 @@ int Datos()
 
     cout << "Ingrese su año de nacimiento: ";
     cin >> auxF1->Año;
+
+    auxC1->izq = NULL;
+    auxC1->der = NULL;
+
+    auxF1->izq = NULL;
+    auxF1->der = NULL;
 
     auxC1 = auxF1;
     return 0;
@@ -68,7 +74,7 @@ int posicionarFecha()
             auxF2->der = auxF1;
         }
     }
-    if (auxF1->Año != auxF2->Año && auxF1->Mes != auxF2->Mes && auxF1->Dia != auxF2->Dia)
+    else
     {
         if (auxF2->izq != NULL)
         {
@@ -95,7 +101,7 @@ int posicionarCodigo()
     }
     else
     {
-        auxC2->izq = auxC1;
+        auxC2->der = auxC1;
     }
     if (auxC1->Codigo < auxC2->Codigo)
     {
@@ -150,34 +156,100 @@ int registrarCodigo()
 // por fecha
 int ordenarPreF(Registro5 *Retroceso1)
 {
-
+    cout << "Nombre: " << Retroceso1->Nombre << " " << Retroceso1->Apellido << endl;
+    cout << "Codigo: " << Retroceso1->Codigo << endl;
+    cout << "Fecha de nacimiento: " << Retroceso1->Dia << "/" << Retroceso1->Mes << "/" << Retroceso1->Año << endl;
+    cout << " " << endl;
+    if (Retroceso1->izq != NULL)
+    {
+        ordenarPreF(Retroceso1->izq);
+    }
+    if (Retroceso1->der != NULL)
+    {
+        ordenarPreF(Retroceso1->der);
+    }
     return 0;
 }
 int ordenarInF(Registro5 *Retroceso2)
 {
-
+    if (Retroceso2->izq != NULL)
+    {
+        ordenarInF(Retroceso2->izq);
+    }
+    cout << "Nombre: " << Retroceso2->Nombre << " " << Retroceso2->Apellido << endl;
+    cout << "Codigo: " << Retroceso2->Codigo << endl;
+    cout << "Fecha de nacimiento: " << Retroceso2->Dia << "/" << Retroceso2->Mes << "/" << Retroceso2->Año << endl;
+    cout << " " << endl;
+    if (Retroceso2->der != NULL)
+    {
+        ordenarInF(Retroceso2->der);
+    }
     return 0;
 }
 int ordenarPostF(Registro5 *Retroceso3)
 {
-
+    if (Retroceso3->izq != NULL)
+    {
+        ordenarPostF(Retroceso3->izq);
+    }
+    if (Retroceso3->der != NULL)
+    {
+        ordenarPostF(Retroceso3->der);
+    }
+    cout << "Nombre: " << Retroceso3->Nombre << " " << Retroceso3->Apellido << endl;
+    cout << "Codigo: " << Retroceso3->Codigo << endl;
+    cout << "Fecha de nacimiento: " << Retroceso3->Dia << "/" << Retroceso3->Mes << "/" << Retroceso3->Año << endl;
+    cout << " " << endl;
     return 0;
 }
 
 // por Codigo
 int ordenarPreC(Registro5 *Retroceso4)
 {
-
+    cout << "Nombre: " << Retroceso4->Nombre << " " << Retroceso4->Apellido << endl;
+    cout << "Codigo: " << Retroceso4->Codigo << endl;
+    cout << "Fecha de nacimiento: " << Retroceso4->Dia << "/" << Retroceso4->Mes << "/" << Retroceso4->Año << endl;
+    cout << " " << endl;
+    if (Retroceso4->izq != NULL)
+    {
+        ordenarPreC(Retroceso4->izq);
+    }
+    if (Retroceso4->der != NULL)
+    {
+        ordenarPreC(Retroceso4->der);
+    }
     return 0;
 }
 int ordenarInC(Registro5 *Retroceso5)
 {
-
+    if (Retroceso5->izq != NULL)
+    {
+        ordenarInC(Retroceso5->izq);
+    }
+    cout << "Nombre: " << Retroceso5->Nombre << " " << Retroceso5->Apellido << endl;
+    cout << "Codigo: " << Retroceso5->Codigo << endl;
+    cout << "Fecha de nacimiento: " << Retroceso5->Dia << "/" << Retroceso5->Mes << "/" << Retroceso5->Año << endl;
+    cout << " " << endl;
+    if (Retroceso5->der != NULL)
+    {
+        ordenarInC(Retroceso5->der);
+    }
     return 0;
 }
-int ordenarPostC(Registro5 *Retroceso5)
+int ordenarPostC(Registro5 *Retroceso6)
 {
-
+    if (Retroceso6->izq != NULL)
+    {
+        ordenarPostC(Retroceso6->izq);
+    }
+    if (Retroceso6->der != NULL)
+    {
+        ordenarPostC(Retroceso6->der);
+    }
+    cout << "Nombre: " << Retroceso6->Nombre << " " << Retroceso6->Apellido << endl;
+    cout << "Codigo: " << Retroceso6->Codigo << endl;
+    cout << "Fecha de nacimiento: " << Retroceso6->Dia << "/" << Retroceso6->Mes << "/" << Retroceso6->Año << endl;
+    cout << " " << endl;
     return 0;
 }
 
@@ -185,34 +257,59 @@ int ordenarPostC(Registro5 *Retroceso5)
 // Pre orden
 int recorrerPreF()
 {
-
+    auxF1 = raizF;
+    if (auxF1 != NULL)
+    {
+        ordenarPreF(auxF1);
+    }
     return 0;
 }
 int recorrerPreC()
 {
-
+    auxC1 = raizC;
+    if (auxC1 != NULL)
+    {
+        ordenarPreC(auxC1);
+    }
     return 0;
 }
+
 // In orden
 int recorrerInF()
 {
-
+    auxF1 = raizF;
+    if (auxF1 != NULL)
+    {
+        ordenarInF(auxF1);
+    }
     return 0;
 }
 int recorrerInC()
 {
-
+    auxC1 = raizC;
+    if (auxC1 != NULL)
+    {
+        ordenarInC(auxC1);
+    }
     return 0;
 }
 // Post orden
 int recorrerPostF()
 {
-
+    auxF1 = raizF;
+    if (auxF1 != NULL)
+    {
+        ordenarPostF(auxF1);
+    }
     return 0;
 }
 int recorrerPostC()
 {
-
+    auxC1 = raizC;
+    if (auxC1 != NULL)
+    {
+        ordenarPostC(auxC1);
+    }
     return 0;
 }
 
