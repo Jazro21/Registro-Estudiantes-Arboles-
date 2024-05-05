@@ -1,5 +1,9 @@
+// Notas adicionales del Ing. Ampudia para el Lic. Perez
+// hice un intento de crear el metodo de buscar por codigo, pero no funciona
+
 #include <iostream>
 #include <malloc.h>
+#include <string.h>
 
 using namespace std;
 
@@ -48,17 +52,23 @@ int Datos()
     cout << "Ingrese su año de nacimiento: ";
     cin >> auxF1->Año;
 
+    strcpy(auxC1->Nombre, auxF1->Nombre);
+    strcpy(auxC1->Apellido, auxF1->Apellido);
+
+    auxC1->Codigo = auxF1->Codigo;
+    auxC1->Dia = auxF1->Dia;
+    auxC1->Mes = auxF1->Mes;
+    auxC1->Año = auxF1->Año;
+
     auxC1->izq = NULL;
     auxC1->der = NULL;
 
     auxF1->izq = NULL;
     auxF1->der = NULL;
-
-    auxC1 = auxF1;
     return 0;
 }
 
-// metodos de mosicionamiento
+// metodos de posicionamiento
 
 int posicionarFecha()
 {
@@ -315,17 +325,72 @@ int recorrerPostC()
 
 int opcion = 0;
 int opcion2 = 0;
+int opcion3 = 0;
+int buscador = 0;
+
+int buscarF()
+{
+
+    return 0;
+}
+
+int buscarC()
+{
+    auxC1 = raizC;
+
+    if (auxC1 == NULL)
+    {
+        cout << "no hay estudiantes registrados." << endl;
+    }
+
+    if (auxC1 != NULL)
+    {
+        cout << "ingrese el codigo del estudiante a buscar" << endl;
+        cin >> buscador;
+
+        while (auxC1->der != NULL) // busca por derecha
+        {
+            if (buscador == auxC1->Codigo)
+            {
+                cout << "el estudiante se encontro:" << endl;
+                cout << "Nombre: " << auxC1->Nombre << " " << auxC1->Apellido << endl;
+                cout << "Codigo: " << auxC1->Codigo << endl;
+                cout << "Fecha de nacimiento: " << auxC1->Dia << " " << auxC1->Mes << " " << auxC1->Año << endl;
+            }
+            if (buscador != auxC1->Codigo)
+            {
+                auxC1 = auxC1->der;
+            }
+        }
+
+        while (auxC1->izq != NULL) // busca por izquierda
+        {
+            if (buscador == auxC1->Codigo)
+            {
+                cout << "el estudiante se encontro:" << endl;
+                cout << "Nombre: " << auxC1->Nombre << " " << auxC1->Apellido << endl;
+                cout << "Codigo: " << auxC1->Codigo << endl;
+                cout << "Fecha de nacimiento: " << auxC1->Dia << " " << auxC1->Mes << " " << auxC1->Año << endl;
+            }
+            if (buscador!= auxC1->Codigo)
+            {
+                auxC1 = auxC1->izq;
+            }
+        }
+    }
+    return 0;
+}
 int main()
 {
     do
     {
         cout << "menu" << endl;
         cout << "1. Agregar estudiante" << endl;
+        cout << "2. buscar estudiante" << endl;
         cout << "3. Recorrer el listado de estudiantes (Pre_Orden)" << endl;
         cout << "4. Recorrer el listado de estudiantes (In_Orden)" << endl;
         cout << "5. Recorrer el listado de estudiantes (Post_Orden)" << endl;
         cout << "7. salir" << endl;
-        cout << " " << endl;
         cin >> opcion;
 
         switch (opcion)
@@ -334,6 +399,27 @@ int main()
             Datos();
             registrarFecha();
             registrarCodigo();
+            break;
+        case 2:
+            cout << "por cual parametro desea  buscar?" << endl;
+            cout << "1. por codigo" << endl;
+            cout << "2. por fecha" << endl;
+            cin >> opcion3;
+
+            switch (opcion3)
+            {
+            case 1:
+                buscarC();
+                break;
+            case 2:
+                buscarF();
+                break;
+            default:
+                cout << "Opcion no valida" << endl;
+
+                break;
+            }
+
             break;
         case 3:
             cout << "recorrido en Pre-Orden (fecha)" << endl;
