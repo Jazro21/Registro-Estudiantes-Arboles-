@@ -54,19 +54,19 @@ int Datos()
     cout << "Ingrese su año de nacimiento: ";
     cin >> auxF1->Año;
 
-    strcpy(auxC1->Nombre, auxF1->Nombre);
-    strcpy(auxC1->Apellido, auxF1->Apellido);
-
-    auxC1->Codigo = auxF1->Codigo;
-    auxC1->Dia = auxF1->Dia;
-    auxC1->Mes = auxF1->Mes;
-    auxC1->Año = auxF1->Año;
-
     auxC1->izq = NULL;
     auxC1->der = NULL;
 
     auxF1->izq = NULL;
     auxF1->der = NULL;
+
+    strcpy(auxC1->Nombre, auxF1->Nombre);
+    strcpy(auxC1->Apellido, auxF1->Apellido);
+    auxC1->Codigo = auxF1->Codigo;
+    auxC1->Dia = auxF1->Dia;
+    auxC1->Mes = auxF1->Mes;
+    auxC1->Año = auxF1->Año;
+
     return 0;
 }
 
@@ -111,10 +111,10 @@ int posicionarCodigo()
             auxC2 = auxC2->der;
             posicionarCodigo();
         }
-    }
-    else
-    {
-        auxC2->der = auxC1;
+        else
+        {
+            auxC2->der = auxC1;
+        }
     }
 
     if (auxC1->Codigo < auxC2->Codigo)
@@ -361,40 +361,88 @@ int buscarF()
     return 0;
 }
 
-int buscarC()
+int buscarC(Registro5 *raizC, int buscadorCodigo)
 {
-    if (auxC1 == NULL)
+    if (raizC == NULL)
     {
-        cout << "no hay estudiantes registrados" << endl;
+        cout << "No hay estudiantes registrados" << endl;
+        return 0;
     }
 
-    if (auxC1 != NULL)
+    if (buscadorCodigo == raizC->Codigo)
     {
-        if (auxC1->Codigo == buscadorCodigo)
+        cout << "Estudiante encontrado en la raíz:" << endl;
+        cout << "Nombre: " << raizC->Nombre << " " << raizC->Apellido << endl;
+        cout << "Codigo: " << raizC->Codigo << endl;
+        cout << "Fecha de nacimiento: " << raizC->Dia << "/" << raizC->Mes << "/" << raizC->Año << endl;
+        return 1;
+    }
+
+    Registro5 *aux = raizC;
+    bool encontrado = false;
+
+    while (aux != NULL && !encontrado)
+    {
+        if (buscadorCodigo < aux->Codigo)
         {
-            cout << "Nombre: " << auxC1->Nombre << " " << auxC1->Apellido << endl;
-            cout << "Codigo: " << auxC1->Codigo << endl;
-            cout << "Fecha de nacimiento: " << auxC1->Dia << "/" << auxC1->Mes << "/" << auxC1->Año << endl;
-            cout << " " << endl;
-            return 0;
+            aux = aux->izq;
         }
-        if (auxC1->Codigo != buscadorCodigo)
+        else if (buscadorCodigo > aux->Codigo)
         {
-            if (auxC1->der != NULL)
-            {
-                auxC1 = auxC1->der;
-                buscarC();
-            }
-            if (auxC1->izq != NULL)
-            {
-                auxC1 = auxC1->izq;
-                buscarC();
-            }
+            aux = aux->der;
         }
+        else
+        {
+            cout << "Estudiante encontrado:" << endl;
+            cout << "Nombre: " << aux->Nombre << " " << aux->Apellido << endl;
+            cout << "Codigo: " << aux->Codigo << endl;
+            cout << "Fecha de nacimiento: " << aux->Dia << "/" << aux->Mes << "/" << aux->Año << endl;
+            encontrado = true;
+        }
+    }
+
+    if (!encontrado)
+    {
+        cout << "Estudiante no encontrado" << endl;
     }
 
     return 0;
 }
+
+// int buscarC()
+//{
+//  if (auxC1 == NULL)
+//  {
+//      cout << "no hay estudiantes registrados" << endl;
+//  }
+//
+//  if (auxC1 != NULL)
+//  {
+//      if (auxC1->Codigo == buscadorCodigo)
+//      {
+//          cout << "Nombre: " << auxC1->Nombre << " " << auxC1->Apellido << endl;
+//          cout << "Codigo: " << auxC1->Codigo << endl;
+//          cout << "Fecha de nacimiento: " << auxC1->Dia << "/" << auxC1->Mes << "/" << auxC1->Año << endl;
+//          cout << " " << endl;
+//          return 0;
+//      }
+//      if (auxC1->Codigo != buscadorCodigo)
+//      {
+//          if (auxC1->der != NULL)
+//          {
+//              auxC1 = auxC1->der;
+//              buscarC();
+//          }
+//          if (auxC1->izq != NULL)
+//          {
+//              auxC1 = auxC1->izq;
+//              buscarC();
+//          }
+//      }
+//  }
+//
+//  return 0;
+//}
 
 int buscar()
 {
@@ -409,7 +457,7 @@ int buscar()
         cout << "ingrese el codigo" << endl;
         cin >> buscadorCodigo;
         auxC1 = raizC;
-        buscarC();
+        buscarC(raizC, buscadorCodigo);
         break;
     case 2:
         cout << "ingrese el dia" << endl;
