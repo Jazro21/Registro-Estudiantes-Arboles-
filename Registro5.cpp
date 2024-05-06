@@ -31,7 +31,6 @@ Registro5 *raizC = NULL;
 Registro5 *auxC1 = NULL;
 Registro5 *auxC2 = NULL;
 
-
 int Datos()
 {
     auxF1 = (struct Registro5 *)malloc(sizeof(struct Registro5));
@@ -272,19 +271,17 @@ int ordenarPostC(Registro5 *Retroceso6)
 // Pre orden
 int recorrerPreF()
 {
-    auxF1 = raizF;
     if (auxF1 != NULL)
     {
-        ordenarPreF(auxF1);
+        ordenarPreF(raizF);
     }
     return 0;
 }
 int recorrerPreC()
 {
-    auxC1 = raizC;
     if (auxC1 != NULL)
     {
-        ordenarPreC(auxC1);
+        ordenarPreC(raizC);
     }
     return 0;
 }
@@ -292,38 +289,34 @@ int recorrerPreC()
 // In orden
 int recorrerInF()
 {
-    auxF1 = raizF;
     if (auxF1 != NULL)
     {
-        ordenarInF(auxF1);
+        ordenarInF(raizF);
     }
     return 0;
 }
 int recorrerInC()
 {
-    auxC1 = raizC;
     if (auxC1 != NULL)
     {
-        ordenarInC(auxC1);
+        ordenarInC(raizC);
     }
     return 0;
 }
 // Post orden
 int recorrerPostF()
 {
-    auxF1 = raizF;
     if (auxF1 != NULL)
     {
-        ordenarPostF(auxF1);
+        ordenarPostF(raizF);
     }
     return 0;
 }
 int recorrerPostC()
 {
-    auxC1 = raizC;
     if (auxC1 != NULL)
     {
-        ordenarPostC(auxC1);
+        ordenarPostC(raizC);
     }
     return 0;
 }
@@ -333,21 +326,49 @@ int opcion2 = 0;
 int opcion3 = 0;
 int buscadorCodigo = 0;
 
+int buscadorDia = 0;
+int BuscadorMes = 0;
+int BuscadorAño = 0;
+
 int buscarF()
 {
-
+    if (auxF1 == NULL)
+    {
+        cout << "no hay estudiantes registrados" << endl;
+    }
+    if (auxF1 != NULL)
+    {
+        if (auxF1->Dia == buscadorDia && auxF1->Mes == BuscadorMes && auxF1->Año == BuscadorAño)
+        {
+            cout << "Nombre: " << auxF1->Nombre << " " << auxF1->Apellido << endl;
+            cout << "Codigo: " << auxF1->Codigo << endl;
+            cout << "Fecha de nacimiento: " << auxF1->Dia << "/" << auxF1->Mes << "/" << auxF1->Año << endl;
+        }
+        if (auxF1->Dia != buscadorDia && auxF1->Mes == BuscadorMes && auxF1->Año == BuscadorAño)
+        {
+            if (auxF1->izq != NULL)
+            {
+                auxF1 = auxF1->izq;
+                buscarF();
+            }
+            if (auxF1->der != NULL)
+            {
+                auxF1 = auxF1->der;
+                buscarF();
+            }
+        }
+    }
     return 0;
 }
 
 int buscarC()
 {
-    auxC1= raizC;
     if (auxC1 == NULL)
     {
-        cout << "no hay estudiantes registrados"<< endl;
+        cout << "no hay estudiantes registrados" << endl;
     }
 
-    while (auxC1!= NULL)
+    if (auxC1 != NULL)
     {
         if (auxC1->Codigo == buscadorCodigo)
         {
@@ -355,17 +376,19 @@ int buscarC()
             cout << "Codigo: " << auxC1->Codigo << endl;
             cout << "Fecha de nacimiento: " << auxC1->Dia << "/" << auxC1->Mes << "/" << auxC1->Año << endl;
             cout << " " << endl;
-            return 0;   
+            return 0;
         }
-        else if (auxC1->Codigo != buscadorCodigo)
+        if (auxC1->Codigo != buscadorCodigo)
         {
-            if (auxC1->Codigo > buscadorCodigo)
-            {
-                auxC1 = auxC1->izq;
-            }
-            else
+            if (auxC1->der != NULL)
             {
                 auxC1 = auxC1->der;
+                buscarC();
+            }
+            if (auxC1->izq != NULL)
+            {
+                auxC1 = auxC1->izq;
+                buscarC();
             }
         }
     }
@@ -373,8 +396,9 @@ int buscarC()
     return 0;
 }
 
-int buscar(){
-    int opcion4 =0;
+int buscar()
+{
+    int opcion4 = 0;
     cout << "1. por codigo" << endl;
     cout << "2. por fecha" << endl;
     cin >> opcion4;
@@ -382,13 +406,23 @@ int buscar(){
     switch (opcion4)
     {
     case 1:
-    cout << "ingrese el codigo" << endl;
-    cin >> buscadorCodigo;
-    buscarC();
+        cout << "ingrese el codigo" << endl;
+        cin >> buscadorCodigo;
+        auxC1 = raizC;
+        buscarC();
         break;
     case 2:
-        break;
+        cout << "ingrese el dia" << endl;
+        cin >> buscadorDia;
 
+        cout << "ingrese el mes" << endl;
+        cin >> BuscadorMes;
+
+        cout << "ingrese el año" << endl;
+        cin >> BuscadorAño;
+        auxF1 = raizF;
+        buscarF();
+        break;
 
     default:
         break;
@@ -416,7 +450,7 @@ int main()
             registrarCodigo();
             break;
         case 2:
-        buscar();
+            buscar();
             break;
         case 3:
             cout << "recorrido en Pre-Orden (fecha)" << endl;
