@@ -1,3 +1,7 @@
+// Integrantes del grupo:
+// Deymar Andres Ampudia Rivas
+// Rodrigo Arturo Pérez Angulo
+
 // Notas adicionales del Ing. Ampudia para el Lic. Perez
 // hice un intento de crear el metodo de buscar por codigo, pero no funciona
 // Notas de actualizacion
